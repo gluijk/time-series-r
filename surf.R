@@ -1,8 +1,8 @@
 # Windsurf vs Kitesurf. Series temporales con R
-# www.datosimagensonido.com
+# www.overfitting.net
 
 
-# FUNCIÓN AUXILIAR
+# FUNCIÃ“N AUXILIAR
 decomposedts.plot=function(decomposedts, legend=T,
         x='topright', ylab='', ...){
     plot(decomposedts$x, ylab=ylab, ...)
@@ -15,18 +15,18 @@ decomposedts.plot=function(decomposedts, legend=T,
 }
 
 
-# DESCOMPOSICIÓN SERIES TEMPORALES
+# DESCOMPOSICIÃ“N SERIES TEMPORALES
 
 # Series temporales mensuales desde ene-04
 surf=read.table("surf.csv", sep=',', header=T)  # CSV de Google
 windsurfts=ts(surf$Windsurf, frequency=12, start=c(2004,1))
 kitesurfts=ts(surf$Kitesurf, frequency=12, start=c(2004,1))
 
-# Corrección logarítmica
+# CorrecciÃ³n logarÃ­tmica
 logwindsurfts=log(windsurfts)
 logkitesurfts=log(kitesurfts)
 
-# Descomposición
+# DescomposiciÃ³n
 logwindsurftscomps=decompose(logwindsurfts)  # type='additive'
 logkitesurftscomps=decompose(logkitesurfts)  # type='additive'
 plot(logwindsurftscomps)
@@ -57,20 +57,20 @@ kitesurfts=ts(training$Kitesurf, frequency=12, start=c(2004,1))
 windsurfvalidts=ts(valid$Windsurf, frequency=12, start=c(2015,1))
 kitesurfvalidts=ts(valid$Kitesurf, frequency=12, start=c(2015,1))
 
-# Corrección logarítmica
+# CorrecciÃ³n logarÃ­tmica
 logwindsurfts=log(windsurfts)
 logkitesurfts=log(kitesurfts)
 
 
-# Windsurf (2 métodos)
+# Windsurf (2 mÃ©todos)
 fit=auto.arima(logwindsurfts, trace=T)  # Best model: ARIMA(1,1,1)(0,1,1)[12]
 fit=arima(logwindsurfts, order=c(1,1,1), seasonal=list(order=c(0,1,1)))
 
-plot(forecast(fit, h=12*7), col='blue', fcol='blue', flty=3,  # Proy. 7 años
+plot(forecast(fit, h=12*7), col='blue', fcol='blue', flty=3,  # Proy. 7 aÃ±os
     main='Windsurf', xlab='Time', shadecols=c('gray90','gray75'))
 legend('topright', c('Actual', 'Forecast'), col=c('blue','blue'), lty=c(1,3))
 
-forewind=predict(fit, n.ahead=12*7)  # Proy. 7 años
+forewind=predict(fit, n.ahead=12*7)  # Proy. 7 aÃ±os
 U=forewind$pred+2*forewind$se
 L=forewind$pred-2*forewind$se
 ts.plot(logwindsurfts, forewind$pred, U, L,
@@ -79,15 +79,15 @@ legend('bottomleft', c('Actual', 'Forecast', 'Err bounds (95% confidence)'),
     col=c('blue','blue','green'), lty=c(1,3,3))
 
 
-# Kitesurf (2 métodos)
+# Kitesurf (2 mÃ©todos)
 fit=auto.arima(logkitesurfts, trace=T)  # Best model: ARIMA(0,1,1)(1,1,1)[12]
 fit=arima(logkitesurfts, order=c(0,1,1), seasonal=list(order=c(1,1,1)))
 
-plot(forecast(fit, h=12*7), col='red', fcol='red', flty=3,  # Proy. 7 años
+plot(forecast(fit, h=12*7), col='red', fcol='red', flty=3,  # Proy. 7 aÃ±os
     main='Kitesurf', xlab='Time', shadecols=c('gray90','gray75'))
 legend('topright', c('Actual', 'Forecast'), col=c('red','red'), lty=c(1,3))
 
-forekite=predict(fit, n.ahead=12*7)  # Proy. 7 años
+forekite=predict(fit, n.ahead=12*7)  # Proy. 7 aÃ±os
 U=forekite$pred+2*forekite$se
 L=forekite$pred-2*forekite$se
 ts.plot(logkitesurfts, forekite$pred, U, L,
