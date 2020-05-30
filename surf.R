@@ -1,5 +1,6 @@
 # Windsurf vs Kitesurf. Series temporales con R
 # www.overfitting.net
+# https://www.overfitting.net/2018/08/windsurf-vs-kitesurf-series-temporales.html
 
 
 # FUNCIÓN AUXILIAR
