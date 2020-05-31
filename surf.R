@@ -63,14 +63,16 @@ logwindsurfts=log(windsurfts)
 logkitesurfts=log(kitesurfts)
 
 
-# Windsurf (2 métodos)
+# Windsurf
 fit=auto.arima(logwindsurfts, trace=T)  # Best model: ARIMA(1,1,1)(0,1,1)[12]
 fit=arima(logwindsurfts, order=c(1,1,1), seasonal=list(order=c(0,1,1)))
 
+# Método 1: forecast()
 plot(forecast(fit, h=12*7), col='blue', fcol='blue', flty=3,  # Proy. 7 años
     main='Windsurf', xlab='Time', shadecols=c('gray90','gray75'))
 legend('topright', c('Actual', 'Forecast'), col=c('blue','blue'), lty=c(1,3))
 
+# Método 2: predict()
 forewind=predict(fit, n.ahead=12*7)  # Proy. 7 años
 U=forewind$pred+2*forewind$se
 L=forewind$pred-2*forewind$se
@@ -80,14 +82,16 @@ legend('bottomleft', c('Actual', 'Forecast', 'Err bounds (95% confidence)'),
     col=c('blue','blue','green'), lty=c(1,3,3))
 
 
-# Kitesurf (2 métodos)
+# Kitesurf
 fit=auto.arima(logkitesurfts, trace=T)  # Best model: ARIMA(0,1,1)(1,1,1)[12]
 fit=arima(logkitesurfts, order=c(0,1,1), seasonal=list(order=c(1,1,1)))
 
+# Método 1: forecast()
 plot(forecast(fit, h=12*7), col='red', fcol='red', flty=3,  # Proy. 7 años
     main='Kitesurf', xlab='Time', shadecols=c('gray90','gray75'))
 legend('topright', c('Actual', 'Forecast'), col=c('red','red'), lty=c(1,3))
 
+# Método 2: predict()
 forekite=predict(fit, n.ahead=12*7)  # Proy. 7 años
 U=forekite$pred+2*forekite$se
 L=forekite$pred-2*forekite$se
